@@ -13,17 +13,6 @@ import datainput
 import os
 import numpy as np
 
-#map first 2 number in ID to province
-area = { 11: u"北京", 12: u"天津", 13: u"河北", 14: u"山西",
-		 15: u"内蒙古", 21: u"辽宁", 22: u"吉林", 23: u"黑龙江", 31: u"上海",
-		 32: u"江苏", 33: u"浙江", 34: u"安徽", 35: u"福建", 36: u"江西",
-		 37: u"山东", 41: u"河南", 42: u"湖北", 43: u"湖南", 44: u"广东",
-		 45: u"广西", 46: u"海南", 50: u"重庆", 51: u"四川", 52: u"贵州",
-		 53: u"云南", 54: u"西藏", 61: u"陕西", 62: u"甘肃", 63: u"青海",
-		 64: u"宁夏", 65: u"新疆", 71: u"台湾", 81: u"香港", 82: u"澳门",
-		 91: u"国外"
-		}
-
 def savetofile(dataframe, filename):
     '''
     save dataframe to .h5 file
@@ -65,7 +54,6 @@ def fetchUserInfo(*filenametuple):
         if user['certnum'] != "":
             certnum = user['certnum']
             birthdate = certnum[-8:]  # 19780323
-            #province = area[int(certnum[:2])]
             province = int(certnum[:2])
             user['birthdate'] = birthdate
             user['province'] = province
