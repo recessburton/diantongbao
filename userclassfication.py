@@ -11,16 +11,26 @@ Created on 16/7/20 10:19
 import pandas as pd
 from sklearn.cluster import KMeans
 import dataconstruct
+import dataclean
+import matplotlib.pyplot as plt
+import numpy as np
 
 k = 5  # #cluster
 cpus = 2 # #cup kernels
 
 userinfofilename = 't_user_origin.xml'
-userdata = dataconstruct.fetchUserInfo(userinfofilename)
+userdata = dataconstruct.makeUserData()
+dataclean.dataClean(userdata)
+datafile = 'userdata.csv'
 
+data = pd.read_csv(datafile)
 
 kmodel = KMeans(n_clusters = k, n_jobs = 2)
-kmodel.fit(userdata) #train data
+kmodel.fit(data) #train data
 
-kmodel.cluster_centers_ #show cluster center
-kmodel.labels_ #show class of sample
+print kmodel.cluster_centers_ #show cluster center
+print kmodel.labels_ #show class of sample
+
+data['class'] = kmodel.labels_
+
+data.to_csv('class.csv')
