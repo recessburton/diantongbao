@@ -13,11 +13,15 @@ birthdate: specifies chronological decades of user’s birthdate
 province:
 userstatus:
 usertype:
+While in kmeans classification process, we only exploit the standardized
+balance column, which is a continuous value.
 
 In user action table however, we only utilize the userid info actually which
 specified as logcount.
 logcount: specifies the summation of logs each time the user operates on app. 
 It’s the count of each userid in user action table.
 
+In all, we have TWO columns in kmeans classifying process.
+
 The result file is name as class.csv in this application path.
-The class column stands for the types of each user which varies from 0-4.
+The class column stands for the types of each user which varies from A-E.
