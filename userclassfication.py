@@ -16,6 +16,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from pandas import DataFrame
 from pandas import Series
+import kmeanspretreatment
 
 k = 5  # #cluster
 cpus = 2 # #cup kernels
@@ -31,10 +32,14 @@ area = { 0:u"未知", 11: u"北京", 12: u"天津", 13: u"河北", 14: u"山西"
 		 91: u"国外"
 		}
 
+classlabels = { 0:'A', 1:'B', 2:'C', 3:'D', 4:'E', 5:'F', 6:'G', 7:'H', 8:'I'}
+
 userinfofilename = 't_user_origin.xml'
 userdata = dataconstruct.makeUserData()
-dataclean.dataClean(userdata)
-classifydatafile = 'userdata.csv'
+usercleaneddata = dataclean.dataClean(userdata)
+kmeansdata = kmeanspretreatment.kmeansPretreatment(usercleaneddata)
+kmeansdata = kmeanspretreatment.kmeansStandardize(kmeansdata)
+classifydatafile = 'kmeansStandardizedData.csv'
 
 classifydata = pd.read_csv(classifydatafile)
 
@@ -44,10 +49,16 @@ kmodel.fit(classifydata) #train data
 print kmodel.cluster_centers_ #show cluster center
 print kmodel.labels_ #show class of sample
 
-classifydata['class'] = kmodel.labels_
+classifydata['class'] = Series(classlabels[i] for i in kmodel.labels_)
 outputdata = DataFrame(classifydata)
-outputdata['province']= Series([area[int(i)] for i in outputdata['province'].values])
+outputdata['province']= Series([area[int(i)] for i in usercleaneddata['province'].values])
+outputdata['birthdate'] = userdata['birthdate']
+outputdata['balance'] = usercleaneddata['balance']
+outputdata['logcount'] = usercleaneddata['logcount']
+outputdata['usertype'] = userdata['usertype']
+outputdata['userstatus'] = userdata['userstatus']
+outputdata['userid'] = userdata['userid']
 
-outputdata.to_csv('class.csv', encoding='gbk')
+outputdata.to_csv('class_1.csv', encoding='utf-8')
 
 print "Classification Completed."
