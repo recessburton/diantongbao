@@ -28,7 +28,12 @@ def birthdateToYear(birthdatestr):
 
 
 def dataClean(userdata):
-    userdata['logcount'] = userdata['logcount'].fillna(1)
+    '''
+    Drop unused columns and fill vacant values.
+    :param userdata:
+    :return DataFrame:
+    '''
+    userdata['logcount'] = userdata['logcount'].fillna(0)
     userdata = userdata.drop('certnum', axis = 1)
     userdata = userdata.drop('inserttime', axis = 1)
     userdata = userdata.drop('userid',axis = 1)

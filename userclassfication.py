@@ -18,7 +18,7 @@ from pandas import DataFrame
 from pandas import Series
 import kmeanspretreatment
 
-k = 5  # #cluster
+k = 9  # #cluster
 cpus = 2 # #cup kernels
 
 #map first 2 number in ID to province
@@ -34,14 +34,16 @@ area = { 0:u"未知", 11: u"北京", 12: u"天津", 13: u"河北", 14: u"山西"
 
 classlabels = { 0:'A', 1:'B', 2:'C', 3:'D', 4:'E', 5:'F', 6:'G', 7:'H', 8:'I'}
 
-userinfofilename = 't_user_origin.xml'
-userdata = dataconstruct.makeUserData()
+userinfofilename = ['t_user_origin.xml']
+useractionfilename = ['t_user_action_log.xml','t_user_action_log_2.xml']
+userdata = dataconstruct.makeUserData([],[])
 usercleaneddata = dataclean.dataClean(userdata)
 kmeansdata = kmeanspretreatment.kmeansPretreatment(usercleaneddata)
-kmeansdata = kmeanspretreatment.kmeansStandardize(kmeansdata)
+#kmeansdata = kmeanspretreatment.kmeansStandardize(kmeansdata)
 classifydatafile = 'kmeansStandardizedData.csv'
 
-classifydata = pd.read_csv(classifydatafile)
+#classifydata = pd.read_csv(classifydatafile)
+classifydata = kmeansdata
 
 kmodel = KMeans(n_clusters = k, n_jobs = 2)
 kmodel.fit(classifydata) #train data
@@ -58,6 +60,8 @@ outputdata['logcount'] = usercleaneddata['logcount']
 outputdata['usertype'] = userdata['usertype']
 outputdata['userstatus'] = userdata['userstatus']
 outputdata['userid'] = userdata['userid']
+nullindex = outputdata.logcount == 0
+outputdata['class'][nullindex] = 'N'
 
 outputdata.to_csv('class_1.csv', encoding='utf-8')
 
