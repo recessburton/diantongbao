@@ -1,4 +1,4 @@
-Copyright (C),2014-2016, YTC, BJFU, www.bjfulinux.cn, www.muheda.com
+Copyright (C),2014-2016, YTC, BJFU, www.bjfulinux.cn
 Created on 16/7/20 10:19
 
 @author: Gaoxiang Yang, ytc, recessburton@gmail.com
